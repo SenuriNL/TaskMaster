@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".AddNoteFragment"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/addNoteHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/poppins"
+            android:text="Add Task..."
+            android:textColor="@color/d_purple"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/addTdName"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/addNoteHeading"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/purple_border"
+            android:fontFamily="@font/poppins"
+            android:hint="Enter the Name"
+            android:maxLines="1"
+            android:padding="12dp"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/addTdDesc"
+            android:layout_width="388dp"
+            android:layout_height="260dp"
+            android:layout_below="@id/addTdName"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/purple_border"
+            android:fontFamily="@font/poppins"
+            android:gravity="top"
+            android:hint="Enter the Description"
+            android:padding="12dp"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/addTdPriority"
+            android:layout_width="386dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addTdDesc"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/purple_border"
+            android:fontFamily="@font/poppins"
+            android:gravity="top"
+            android:hint="Enter the Priority"
+            android:padding="12dp"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/addTdDeadline"
+            android:layout_width="386dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addTdPriority"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/purple_border"
+            android:fontFamily="@font/poppins"
+            android:gravity="top"
+            android:hint="Enter the Deadline"
+            android:inputType="datetime"
+
+            android:padding="12dp"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/chooseDateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addTdDeadline"
+            android:layout_marginTop="16dp"
+            android:text="Choose Date"
+            android:textColor="@color/black" />
+
+    </RelativeLayout>
+</layout>
