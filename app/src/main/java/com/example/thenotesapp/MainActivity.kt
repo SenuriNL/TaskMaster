@@ -8,21 +8,30 @@ import com.example.thenotesapp.repository.NoteRepository
 import com.example.thenotesapp.viewmodel.NoteViewModel
 import com.example.thenotesapp.viewmodel.NoteViewModelFactory
 
+// Main activity class for the application
 class MainActivity : AppCompatActivity() {
 
+    // ViewModel instance for managing notes
     lateinit var noteViewModel: NoteViewModel
 
+    // Called when the activity is starting
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Setup ViewModel
         setupViewModel()
     }
 
-    private fun setupViewModel(){
+    // Sets up the ViewModel for managing notes
+    private fun setupViewModel() {
+        // Creates a NoteRepository instance with the application context
         val noteRepository = NoteRepository(NoteDatabase(this))
-        val viewModelProviderFactory = NoteViewModelFactory(application,noteRepository)
-        noteViewModel = ViewModelProvider(this,viewModelProviderFactory)[NoteViewModel::class.java]
 
+        // Creates a ViewModelProviderFactory for the NoteViewModel
+        val viewModelProviderFactory = NoteViewModelFactory(application, noteRepository)
+
+        // Initializes the NoteViewModel using the ViewModelProvider with the ViewModelProviderFactory
+        noteViewModel = ViewModelProvider(this, viewModelProviderFactory)[NoteViewModel::class.java]
     }
 }

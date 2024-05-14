@@ -25,6 +25,7 @@ import com.example.thenotesapp.model.Note
 import com.example.thenotesapp.viewmodel.NoteViewModel
 import java.util.Calendar
 
+// Fragment class for editing an existing note
 class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
 
     private var editNoteBinding: FragmentEditNoteBinding? = null
@@ -33,8 +34,10 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
     private lateinit var notesViewModel: NoteViewModel
     private lateinit var currentNote: Note
 
+    // Receiving the arguments passed to this fragment
     private val args: EditNoteFragmentArgs by navArgs()
 
+    // Inflating the fragment's layout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,30 +46,37 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
         return binding.root
     }
 
+    // Setting up the fragment's view
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Setting up the options menu
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        // Initializing the ViewModel and current note
         notesViewModel = (activity as MainActivity).noteViewModel
         currentNote = args.note!!
 
+        // Setting the note details to the input fields
         binding.editTdName.setText(currentNote.tdName)
         binding.editTdDesc.setText(currentNote.tdDesc)
         binding.editTdPriority.setText(currentNote.tdPriority)
         binding.editTdDeadline.setText(currentNote.tdDeadline)
 
+        // Setting up the date picker dialog button
         val chooseDateButton: Button = view.findViewById(R.id.chooseDateButton)
         chooseDateButton.setOnClickListener {
             showDatePickerDialog()
         }
 
+        // Setting up the FloatingActionButton to save the note
         binding.editNoteFab.setOnClickListener {
             saveNote()
         }
     }
 
+    // Saving the edited note to the database
     private fun saveNote() {
         val tdName = binding.editTdName.text.toString().trim()
         val tdDesc = binding.editTdDesc.text.toString().trim()
@@ -82,6 +92,7 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
         }
     }
 
+    // Deleting the current note from the database
     private fun deleteNote() {
         AlertDialog.Builder(activity).apply {
             setTitle("Delete Task")
@@ -95,11 +106,13 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
         }.create().show()
     }
 
+    // Creating the options menu
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menu.clear()
         menuInflater.inflate(R.menu.menu_edit_note, menu)
     }
 
+    // Handling menu item selections
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.deleteMenu -> {
@@ -110,6 +123,7 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
         }
     }
 
+    // Showing the date picker dialog
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -124,6 +138,7 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
         datePickerDialog.show()
     }
 
+    // Cleaning up when the fragment is destroyed
     override fun onDestroy() {
         super.onDestroy()
         editNoteBinding = null

@@ -24,9 +24,11 @@ import com.example.thenotesapp.viewmodel.NoteViewModel
 // Fragment for displaying a list of notes
 class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextListener, MenuProvider {
 
+    // Binding object for fragment_home layout
     private var homeBinding: FragmentHomeBinding? = null
     private val binding get() = homeBinding!!
 
+    // ViewModel and Adapter for the notes
     private lateinit var noteViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
 
@@ -39,22 +41,27 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         return binding.root
     }
 
+    // Setting up the fragment's view
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Adding menu provider
+        // Adding menu provider to the fragment
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        // Initializing the ViewModel
         noteViewModel = (activity as MainActivity).noteViewModel
+
+        // Setting up RecyclerView
         setupHomeRecyclerView()
 
+        // Setting up FloatingActionButton to navigate to add note screen
         binding.addNoteFab.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_addNoteFragment)
         }
     }
 
-    // Updating UI based on the list of notes
+    // Updating the UI based on the list of notes
     private fun updateUI(note: List<Note>?) {
         if (note != null) {
             if (note.isNotEmpty()) {
@@ -67,7 +74,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         }
     }
 
-    // Setting up RecyclerView
+    // Setting up RecyclerView with StaggeredGridLayoutManager and adapter
     private fun setupHomeRecyclerView() {
         noteAdapter = NoteAdapter()
         binding.homeRecyclerView.apply {
@@ -76,6 +83,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
             adapter = noteAdapter
         }
 
+        // Observing changes in the list of notes and updating the adapter
         activity?.let {
             noteViewModel.getAllNotes().observe(viewLifecycleOwner) { note ->
                 noteAdapter.differ.submitList(note)
@@ -84,19 +92,20 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         }
     }
 
-    // Function to search for a note
+    // Searching for notes based on the query
     private fun searchNote(query: String?) {
-        val searchQuery = "%$query"
-
+        val searchQuery = "%$query%"
         noteViewModel.searchNote(searchQuery).observe(this) { list ->
             noteAdapter.differ.submitList(list)
         }
     }
 
+    // Handling the search query submission (not used)
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
     }
 
+    // Handling text changes in the search view to filter notes
     override fun onQueryTextChange(newText: String?): Boolean {
         if (newText != null) {
             searchNote(newText)
@@ -104,12 +113,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         return false
     }
 
-    // Clearing the binding reference onDestroy to avoid memory leaks
+    // Clearing the binding reference to avoid memory leaks
     override fun onDestroy() {
         super.onDestroy()
         homeBinding = null
     }
 
+    // Creating the options menu for the fragment
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menu.clear()
         menuInflater.inflate(R.menu.home_menu, menu)
@@ -120,6 +130,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SearchView.OnQueryTextLis
         menuSearch.setOnQueryTextListener(this)
     }
 
+    // Handling menu item selections (not used)
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return false
     }

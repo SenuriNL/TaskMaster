@@ -22,6 +22,7 @@ import com.example.thenotesapp.model.Note
 import com.example.thenotesapp.viewmodel.NoteViewModel
 import java.util.Calendar
 
+// Fragment class for adding a new note
 class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
 
     private var addNoteBinding: FragmentAddNoteBinding? = null
@@ -30,6 +31,7 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
     private lateinit var notesViewModel: NoteViewModel
     private lateinit var addNoteView: View
 
+    // Inflating the fragment's layout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,21 +40,25 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
         return binding.root
     }
 
+    // Setting up the fragment's view
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         notesViewModel = (activity as MainActivity).noteViewModel
         addNoteView = view
 
+        // Setting up the options menu
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        // Setting up the date picker dialog
         val chooseDateButton: Button = view.findViewById(R.id.chooseDateButton)
         chooseDateButton.setOnClickListener {
             showDatePickerDialog()
         }
     }
 
+    // Showing the date picker dialog
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -67,6 +73,7 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
         datePickerDialog.show()
     }
 
+    // Saving the note to the database
     private fun saveNote() {
         val tdName = binding.addTdName.text.toString().trim()
         val tdDesc = binding.addTdDesc.text.toString().trim()
@@ -85,11 +92,13 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
         }
     }
 
+    // Creating the options menu
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menu.clear()
         menuInflater.inflate(R.menu.menu_add_note, menu)
     }
 
+    // Handling menu item selections
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.saveMenu -> {
@@ -100,6 +109,7 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
         }
     }
 
+    // Cleaning up when the fragment is destroyed
     override fun onDestroy() {
         super.onDestroy()
         addNoteBinding = null
